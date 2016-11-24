@@ -18,7 +18,7 @@ Onepage从东方财富吧的贴吧得到一页列表的阅读数，链接，题�
 import urllib
 import urllib2
 import re
-from get_news_comments_title import Tiezi
+from get_tieba_comments_title import Tiezi
 
 class OnePage:
     def __init__(self,i,sIdx):

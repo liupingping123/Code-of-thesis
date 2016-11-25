@@ -52,7 +52,7 @@ if __name__ == "__main__":
     n = 1
 
 
-    for i in range(5,10 ):
+    for i in range(5,10 ):#在这修改页数
         print i,'pages'
         mypage = OnePage(i,'000651')#输入！股票代码
 

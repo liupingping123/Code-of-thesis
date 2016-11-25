@@ -43,7 +43,7 @@ class Tiezi:
         html = self.getPage()
         reg = re.compile(r'<div id="zwconttbt">(.*?)</div>',re.S)
         titlecomment = re.compile(r'<div class="stockcodec">(.*?)</div>',re.S)
-        #reg = re.compile(r'<div id="zwconttbt.*?>\s(.*?)</div>',re.S)#正则表达式中，“.”的作用是匹配除“\n”以外的任何字符
+
         items = re.findall(reg,html)#正则表达式 re findall 方法能够以列表的形式返回能匹配的子串。
         titlecomment = re.findall(titlecomment,html)
         #print items# it is a list
@@ -73,7 +73,7 @@ class Tiezi:
         titlecomment[0] =titlecomment[0].replace("<br>"," ")
         items[0] = items[0].replace("<br>"," ")
         
-        f = open('ls.txt','a') # 文件名最好是英文，中文识别不了
+        f = open('dfcf.txt','a') 
         f.write('\n'+self.date + '\t' +str(self.reading)+'\t'+str(self.commenting)+'\t'+ items[0].strip()+'\t'+titlecomment[0].strip() +'\t')
         f.close()
         
@@ -104,7 +104,7 @@ class Tiezi:
                 i = i +" "+em[a]
             #print i
             
-            f = open('ls.txt','a')# 此处是写入正文内容，所以用a
+            f = open('dfcf.txt','a')# 此处是写入正文内容，所以用a
             f.write(i+' ')
             f.close()
             

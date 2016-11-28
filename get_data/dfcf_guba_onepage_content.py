@@ -45,68 +45,74 @@ class Tiezi:
         titlecomment = re.compile(r'<div class="stockcodec">(.*?)</div>',re.S)
 
         items = re.findall(reg,html)#正则表达式 re findall 方法能够以列表的形式返回能匹配的子串。
-        titlecomment = re.findall(titlecomment,html)
-        #print items# it is a list
-        # 将标题写入文件
-
-        
-        #remove others
-        emoji = re.compile(r'<img src.*? title="(.*?)"/>',re.S)
-        em = re.findall(emoji,items[0])
-        
-        removeAddr = re.compile('<img src.*?/>')#去除表情
-        removeLink = re.compile('<a href.*?</a>')#去除链接
-        items[0] = re.sub(removeAddr,"",items[0])
-        items[0] = re.sub(removeLink,"",items[0])
-        
-        for a in range(len(em)):
-            items[0] = items[0]+' '+em[a]
-  
-
-        emc = re.findall(emoji,titlecomment[0])
-        
-        titlecomment[0] = re.sub(removeAddr,"",titlecomment[0])
-        titlecomment[0] = re.sub(removeLink,"",titlecomment[0])
-        titlecomment[0] = titlecomment[0].strip()
-        for a in range(len(emc)):
-            titlecomment[0] = titlecomment[0]+' '+emc[a]      
-        titlecomment[0] =titlecomment[0].replace("<br>"," ")
-        items[0] = items[0].replace("<br>"," ")
-        
-        f = open('dfcf.txt','a') 
-        f.write('\n'+self.date + '\t' +str(self.reading)+'\t'+str(self.commenting)+'\t'+ items[0].strip()+'\t'+titlecomment[0].strip() +'\t')
-        f.close()
-        
-        #print items[0]
-        #print titlecomment[0]
-        return items
-
-    # 获取正文
-    def getContent(self):
-        html = self.getPage()
-        reg = re.compile(r'<div class="zwlitext stockcodec">(.*?)</div>',re.S)
-        req = re.findall(reg,html)
-        emoji = re.compile(r'<img src.*? title="(.*?)"/>',re.S)
-
-        # 将正文写入文件
-        for i in req:
-            #removeAddr = re.compile('<a.*?</a>')#去除超链接
-            #i = re.sub(removeAddr,"",i)# 找到并替换，比replace更强大
+        if items!=[]:
+            self.result = 1
+            
+            titlecomment = re.findall(titlecomment,html)
+            #print items# it is a list
+            # 将标题写入文件
+    
+            
+            #remove others
+            emoji = re.compile(r'<img src.*? title="(.*?)"/>',re.S)
+            em = re.findall(emoji,items[0])
             
             removeAddr = re.compile('<img src.*?/>')#去除表情
             removeLink = re.compile('<a href.*?</a>')#去除链接
-            em = re.findall(emoji,i)
-            i = re.sub(removeAddr,"",i)
-            i = re.sub(removeLink,"",i)
-            i = i.replace("<br>"," ")
-            #print i
-            for a in range(len(em)):
-                i = i +" "+em[a]
-            #print i
+            items[0] = re.sub(removeAddr,"",items[0])
+            items[0] = re.sub(removeLink,"",items[0])
             
-            f = open('dfcf.txt','a')# 此处是写入正文内容，所以用a
-            f.write(i+' ')
+            for a in range(len(em)):
+                items[0] = items[0]+' '+em[a]
+      
+    
+            emc = re.findall(emoji,titlecomment[0])
+            
+            titlecomment[0] = re.sub(removeAddr,"",titlecomment[0])
+            titlecomment[0] = re.sub(removeLink,"",titlecomment[0])
+            titlecomment[0] = titlecomment[0].strip()
+            for a in range(len(emc)):
+                titlecomment[0] = titlecomment[0]+' '+emc[a]      
+            titlecomment[0] =titlecomment[0].replace("<br>"," ")
+            items[0] = items[0].replace("<br>"," ")
+            
+            f = open('dfcf.txt','a') 
+            f.write('\n'+self.date + '\t' +str(self.reading)+'\t'+str(self.commenting)+'\t'+ items[0].strip()+'\t'+titlecomment[0].strip() +'\t')
             f.close()
+            
+            #print items[0]
+            #print titlecomment[0]
+            return items
+        else:
+            self.result = 0
+
+    # 获取正文
+    def getContent(self):
+        if self.result==1:
+            html = self.getPage()
+            reg = re.compile(r'<div class="zwlitext stockcodec">(.*?)</div>',re.S)
+            req = re.findall(reg,html)
+            emoji = re.compile(r'<img src.*? title="(.*?)"/>',re.S)
+    
+            # 将正文写入文件
+            for i in req:
+                #removeAddr = re.compile('<a.*?</a>')#去除超链接
+                #i = re.sub(removeAddr,"",i)# 找到并替换，比replace更强大
+                
+                removeAddr = re.compile('<img src.*?/>')#去除表情
+                removeLink = re.compile('<a href.*?</a>')#去除链接
+                em = re.findall(emoji,i)
+                i = re.sub(removeAddr,"",i)
+                i = re.sub(removeLink,"",i)
+                i = i.replace("<br>"," ")
+                #print i
+                for a in range(len(em)):
+                    i = i +" "+em[a]
+                #print i
+                
+                f = open('dfcf.txt','a')# 此处是写入正文内容，所以用a
+                f.write(i+' ')
+                f.close()
             
         
 

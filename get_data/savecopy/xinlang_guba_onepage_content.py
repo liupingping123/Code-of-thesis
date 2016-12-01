@@ -41,7 +41,7 @@ class SinaTiezi:
     def getTitle(self):
         #载入源代码
         html = self.getPage()
-        
+        print html
         #找到所有帖子题目和帖主内容
         reg = re.compile(r'<h4 class=.*?>(.*?)</h4>',re.S)#正则表达式中，“.”的作用是匹配除“\n”以外的任何字符
         titlecomment = re.compile(r'<div class=.ilt_p. id="thread_content">(.*?)</div>',re.S)
@@ -68,7 +68,7 @@ class SinaTiezi:
         for a in range(len(emincon)):
             titlecomment[0] = emincon[a] + ' '+ titlecomment[0]       
         #删除开头结尾的空格
-        titlecomment[0] = titlecomment[0].strip()        
+        titlecomment[0] = titlecomment[0].strip().replace('\n',' ')        
         items[0] = items[0].strip()
         
         #print items[0]
@@ -112,7 +112,7 @@ class SinaTiezi:
 
 #daseURL = 'http://guba.eastmoney.com/news,600848,429878160.html'
 if __name__ == "__main__":    
-    baseURL = 'http://guba.sina.com.cn/?s=thread&tid=114244&bid=1443' 
+    baseURL = 'http://guba.sina.com.cn/?s=thread&tid=211915&bid=1399' 
     ls = SinaTiezi(baseURL,'11-11',1,1)
     print "爬虫已启动..."
 

@@ -47,7 +47,7 @@ class Tiezi:
         items = re.findall(reg,html)#正则表达式 re findall 方法能够以列表的形式返回能匹配的子串。
         if items!=[]:
             self.result = 1
-            
+
             titlecomment = re.findall(titlecomment,html)
             #print items# it is a list
             # 将标题写入文件
@@ -58,9 +58,11 @@ class Tiezi:
             em = re.findall(emoji,items[0])
             
             removeAddr = re.compile('<img src.*?/>')#去除表情
-            removeLink = re.compile('<a href.*?</a>')#去除链接
+            removeBlank = re.compile('\s')
+            removeAll = re.compile('<.*?>')
             items[0] = re.sub(removeAddr,"",items[0])
-            items[0] = re.sub(removeLink,"",items[0])
+            items[0] = re.sub(removeAll," ",items[0])
+            items[0] = re.sub(removeBlank," ",items[0])
             
             for a in range(len(em)):
                 items[0] = items[0]+' '+em[a]
@@ -69,7 +71,9 @@ class Tiezi:
             emc = re.findall(emoji,titlecomment[0])
             
             titlecomment[0] = re.sub(removeAddr,"",titlecomment[0])
-            titlecomment[0] = re.sub(removeLink,"",titlecomment[0])
+
+            titlecomment[0] = re.sub(removeAll," ",titlecomment[0])
+            titlecomment[0] = re.sub(removeBlank," ",titlecomment[0])
             titlecomment[0] = titlecomment[0].strip()
             for a in range(len(emc)):
                 titlecomment[0] = titlecomment[0]+' '+emc[a]      
@@ -77,7 +81,7 @@ class Tiezi:
             items[0] = items[0].replace("<br>"," ")
             
             f = open('dfcf.txt','a') 
-            f.write('\n'+self.date + '\t' +str(self.reading)+'\t'+str(self.commenting)+'\t'+ items[0].strip()+'\t'+titlecomment[0].strip() +'\t')
+            f.write('\n'+self.date + '\t' +str(self.reading)+'\t'+str(self.commenting)+'\t'+ items[0].strip().replace('\n',' ')+'\t'+titlecomment[0].strip().replace('\n',' ') +'\t')
             f.close()
             
             #print items[0]

@@ -77,7 +77,7 @@ class SinaTiezi:
             #print items[0]
             #print titlecomment[0]
             f = open('sina.txt','a') # 文件名最好是英文，中文识别不了
-            f.write('\n'+self.date + '\t' +str(self.reading)+'\t'+str(self.commenting)+'\t'+ items[0]+'\t'+titlecomment[0] +'\t')
+            f.write('\n'+self.date + '\t' +str(self.reading)+'\t'+str(self.commenting)+'\t'+ items[0].replace('\n',' ')+'\t'+titlecomment[0].replace('\n',' ') +'\t')
             f.close()
             
             #print items[0]
@@ -121,7 +121,7 @@ class SinaTiezi:
 
 #daseURL = 'http://guba.eastmoney.com/news,600848,429878160.html'
 if __name__ == "__main__":    
-    baseURL = 'http://guba.sina.com.cn/?s=thread&tid=211290&bid=1399' 
+    baseURL = 'http://guba.sina.com.cn/?s=thread&tid=211915&bid=1399' 
     ls = SinaTiezi(baseURL,'11-11',1,1)
     print "爬虫已启动..."
 

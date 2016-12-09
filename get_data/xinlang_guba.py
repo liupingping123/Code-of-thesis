@@ -30,6 +30,11 @@ class OnePage:
         
     def getUrl(self):
         page = self.getPage()
+        #page.replace('fred','red')
+        removeFred = re.compile('<span class="fred">')
+        page = re.sub(removeFred,'<span class="red">',page)
+        #print page
+    
         reg = re.compile(r'<td><span class="red">(\d*)</span></td>.*?<td><span class="red">(\d*)</span></td>.*?<td>.*?<a href="(.*?)" target="_blank" class=" linkblack f14">(.*?)</a>(.*?)</td>.*?<td>.*?<div class="author">.*?</div>.*?</td>.*?<td>(.*?)</td>' ,re.S)
         tiezi_list = re.findall(reg,page)
         print 'the page has:',len(tiezi_list)
@@ -47,15 +52,15 @@ if __name__ == "__main__":
 
 
     n = 1
-    for i in range(13,197):#输入！页数范围
+    for i in range(18,92):#输入！页数范围
         print i,'pages'
-        mypage = OnePage(i,'sh600519')#输入！股票代码
+        mypage = OnePage(i,'sh600018')#输入！股票代码
         
         tiezi_list = mypage.getUrl()
 
         for i in tiezi_list:
 
-            print n
+            print 'No.',n
             n = n+1
         
             baseURL = 'http://guba.sina.com.cn/'+i[2]

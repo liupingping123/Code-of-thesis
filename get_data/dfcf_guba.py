@@ -47,9 +47,9 @@ if __name__ == "__main__":
 
 
     n = 1
-    for i in range(97,128):#输入！页数范围,修改页数
+    for i in range(21,25):#输入！页数范围,修改页数
         print i,'pages'
-        mypage = OnePage(i,600519)#输入！股票代码，修改代码
+        mypage = OnePage(i,600018)#输入！股票代码，修改代码
         tiezi_list = mypage.getUrl()
 
         for i in tiezi_list:

@@ -79,15 +79,16 @@ class SinaTiezi:
             
             #print items[0]
             #print titlecomment[0]
-            if int(self.reading) < int(self.commenting) :
-                f = open('sina.txt','a') # 文件名最好是英文，中文识别不了
-                f.write('\n'+'发现问题：下一行的阅读数小于评论数？？')
-                f.write('\n'+self.date + '\t' +str(self.reading)+'\t'+str(self.commenting)+'\t'+ items[0]+'\t'+titlecomment[0] +'\t')
-                f.close()
-            elif 'div' in titlecomment[0]:
-                self.title_result=False
+            
+            if 'div' in titlecomment[0]:
                 f = open('sina.txt','a') # 文件名最好是英文，中文识别不了
                 f.write('\n'+'题评中有div，可能有特殊符号')
+                f.close()
+                self.title_result=False
+            elif int(self.reading) < int(self.commenting) :
+                f = open('sina.txt','a') # 文件名最好是英文，中文识别不了
+                f.write('\n'+'发现问题：下一行的阅读数竟然小于评论数？？')
+                f.write('\n'+self.date + '\t' +str(self.reading)+'\t'+str(self.commenting)+'\t'+ items[0]+'\t'+titlecomment[0] +'\t')
                 f.close()
             else:
                 f = open('sina.txt','a') # 文件名最好是英文，中文识别不了
@@ -116,7 +117,7 @@ class SinaTiezi:
         
         emoji = re.compile(r'<span class="face-img .*?><span class="face-img .*?>\[(.*?)\]</span></span>',re.S)
         removeAddr = re.compile('<span class="face-img .*?</span></span>')#去除表情
-        removeBlank = re.compile('\s')
+        #removeBlank = re.compile('\s')
         removeOther = re.compile('<.*?>')#去除所有连接
         
 
@@ -125,7 +126,7 @@ class SinaTiezi:
                   
             em = re.findall(emoji,i)
             i = re.sub(removeAddr,"",i)
-            i = re.sub(removeBlank," ",i)
+            #i = re.sub(removeBlank," ",i)
             i = re.sub(removeOther,"",i)
             for a in range(len(em)):
                 i = em[a]+" "+i 

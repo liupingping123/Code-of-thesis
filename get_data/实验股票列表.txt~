@@ -81,6 +81,12 @@ OK价格
 OK东方财富新闻1-8-9
 
 
+
+
+问题：
+
+张桐喆发现的问题：阅读数和点赞数。
+
 已解决：
 一、标题为空，程序中断
    1.该页面不存在
@@ -88,11 +94,13 @@ OK东方财富新闻1-8-9
    2.特殊符号�
     http://guba.sina.com.cn/?s=thread&tid=346811&bid=1560
     http://guba.sina.com.cn/?s=thread&tid=211290&bid=1399
-    方法：如果标题为空，跳过这篇帖子,并在结果中标识出来
+    方法：如果标题为空，跳过这篇帖子
 
+未解决：
 一、文章内如果出现特殊符号�，得出结果有点混乱（多个tab  有/div>）
     例如：中国石油，新浪股吧，1606行	http://guba.sina.com.cn/?s=thread&tid=346370&bid=1560
-    解决：通过判断div跳过帖子，并在结果中显示：题评中有div，可能有特殊符号
+
+
 二、某几个帖子内部有换行，可能是<br>没有被清除：   解决办法：.replace('\n',' ') 
     例如：鹏博士，新浪股吧
       889行	http://guba.sina.com.cn/?s=thread&tid=211915&bid=1399
@@ -102,17 +110,12 @@ OK东方财富新闻1-8-9
       中国石油，东方财富股吧
       1231行	http://guba.eastmoney.com/news,601857,545801513.html
 
-
-问题：
-张桐喆发现的问题：阅读数和点赞数。
-
-未解决：
 三、错误：
     1.程序突然不动的问题（没有报错）
       可能是校园网的问题，用pppoe拨号以后，很少出现这个问题
     2.错误（再试一遍就能成功，可能是网站本身的问题？？）
       HTTP Error 500: Internal Server Error
-      TypeError: expected string or buffer（网络问题）
+      TypeError: expected string or buffer
       
       HTTP Error 500: Internal Server Error
       UnicodeDecodeError: 'ascii' codec can't decode byte 0xe6 in position 29: ordinal not in range(128)
@@ -130,7 +133,7 @@ OK东方财富新闻1-8-9
 
 上港集团 (600018)
 OK东方财富股吧  22-138-139		###13-129-130
-OK新浪股吧 16-90-91
+OK新浪股吧 11-84-85
 OK价格
 OK东方财富新闻1-4-5
 

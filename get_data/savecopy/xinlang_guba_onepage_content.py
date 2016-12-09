@@ -112,7 +112,7 @@ class SinaTiezi:
 
 #daseURL = 'http://guba.eastmoney.com/news,600848,429878160.html'
 if __name__ == "__main__":    
-    baseURL = 'http://guba.sina.com.cn/?s=thread&tid=211915&bid=1399' 
+    baseURL = 'http://guba.sina.com.cn/?s=thread&tid=346370&bid=1560' 
     ls = SinaTiezi(baseURL,'11-11',1,1)
     print "爬虫已启动..."
 

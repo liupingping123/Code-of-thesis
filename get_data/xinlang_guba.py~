@@ -69,3 +69,4 @@ if __name__ == "__main__":
             myTiezi.getTitle()
             myTiezi.getContent()
 
+    print 'finished'

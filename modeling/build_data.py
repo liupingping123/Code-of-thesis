@@ -43,6 +43,7 @@ final_combined = []
 '''把新闻和差价结合'''
 all_return = []
 all_news = []
+all_tobewrite_date = []
 lastdate = ''
 tempnews = ''
 tempdate = ''
@@ -55,28 +56,32 @@ for i in news_split:
         else:
             tempdate = '2016-'+i[0]
 
-        if i[0] != lastdate: 
+        if tempdate != lastdate: 
             all_return.append(tempprice)
             all_news.append(tempnews)
+            all_tobewrite_date.append(lastdate)
             tempnews = ''
         tempprice = stocks_not_null[stocks_not_null.index==tempdate]['return'].tolist()[0]
         tempnews = tempnews + i[3]+' '+i[4] +' '
-        lastdate = i[0]
+        lastdate = tempdate
 all_return.append(tempprice)
 all_news.append(tempnews)
+all_tobewrite_date.append(lastdate)
 print '-----'
 print len(all_return)
 print len(all_news)
+print len(all_tobewrite_date)
 print all_news[-1]
 print stocks_not_null.tail()
 print stocks_not_null.head()
 print '09-30' in final_date
 all_return = all_return[1:]
 all_news = all_news[1:]
+all_tobewrite_date = all_tobewrite_date[1:]
 print len(all_news)
 f = open('data.txt','a')
 for i in range(0,len(final_date)):
-    f.write(str(all_return[i])+'\t'+all_news[i]+'\n')
+    f.write(all_tobewrite_date[i]+'\t'+str(all_return[i])+'\t'+all_news[i]+'\n')
 f.close()
 
     

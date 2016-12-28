@@ -8,18 +8,26 @@ Created on Mon Dec 19 16:52:42 2016
 import pandas as pd
 import numpy as np
 
+'''读入新闻'''
 f = open('test_news.txt')
 news = f.readlines()
 news.reverse()
 news_split = []
 for i in range(0,len(news)):
     news_split.append(news[i].split('\t'))#有六个条目，日期，阅读数，点赞数，题目，新闻，回复
+
 all_date = []
 for i in news_split:
     all_date.append(i[0])
 news_date = set(all_date)
 
-
+'''读入贴吧'''
+t = open('test_tieba.txt')
+tieba = t.readlines()
+tieba_split = []
+for i in range(0,len(tieba)):
+    tieba_split.append(tieba[i].split('\t'))#有六个条目，日期，阅读数，点赞数，题目，帖子，回帖
+print '贴吧的大小:',len(tieba_split),len(tieba_split[0])
 '''得到股价的日期'''
 stocks = pd.read_csv(r'test_price.csv',index_col='date')
 stocks = stocks.sort_index(ascending=True)
@@ -44,13 +52,15 @@ final_combined = []
 all_return = []
 all_news = []
 all_tobewrite_date = []
+all_tieba = []
 lastdate = ''
 tempnews = ''
 tempdate = ''
 tempprice = 0.0
+temptieba = ''
 for i in news_split:    
     if i[0] in final_date:
-       
+
         if i[0][0] == '1':
             tempdate = '2015-'+i[0]
         else:
@@ -60,26 +70,44 @@ for i in news_split:
             all_return.append(tempprice)
             all_news.append(tempnews)
             all_tobewrite_date.append(lastdate)
+            all_tieba.append(temptieba)
             tempnews = ''
+            temptieba = ''
         tempprice = stocks_not_null[stocks_not_null.index==tempdate]['return'].tolist()[0]
+        temptieba = ''    
+        '''
+        for idx,n in enumerate(tieba_split):
+            if n[0] == i[0]:
+                temptieba += temptieba + n[3] 
+        '''
         tempnews = tempnews + i[3]+' '+i[4] +' '
+        
         lastdate = tempdate
 all_return.append(tempprice)
 all_news.append(tempnews)
 all_tobewrite_date.append(lastdate)
+all_return = all_return[1:]
+all_news = all_news[1:]
+all_tobewrite_date = all_tobewrite_date[1:]
+'''
+for i in tieba_split:
+    for idx,n in enumerate(all_tobewrite_date):
+        if i[0] == n[5:]:
+            all_tieba[idx] = all_tieba[idx].join(i[3]+' '+i[4]+' '+i[5]+' ')
+print '帖子一共多少：',len(all_tieba)
+'''
 print '-----'
 print len(all_return)
 print len(all_news)
 print len(all_tobewrite_date)
-print all_news[-1]
+print len(all_tieba)
+#print all_news[-1]
 print stocks_not_null.tail()
 print stocks_not_null.head()
 print '09-30' in final_date
-all_return = all_return[1:]
-all_news = all_news[1:]
-all_tobewrite_date = all_tobewrite_date[1:]
+
 print len(all_news)
-f = open('data.txt','a')
+f = open('data.txt','w')
 for i in range(0,len(final_date)):
     f.write(all_tobewrite_date[i]+'\t'+str(all_return[i])+'\t'+all_news[i]+'\n')
 f.close()

@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Dec 19 16:52:42 2016
-得到训练集和数据集
+得到数据集,通过把日期和差价增量和新闻合在一起，取价格和新闻事件交集（因为假设贴吧每天都会有），合成data.txt，共221天
+并输出混合的日期（即可以使用的日期）
+为什么不把贴吧接在后面？因为贴吧不是按天排的。。。
 @author: Richard
 """
 
@@ -28,6 +30,7 @@ tieba_split = []
 for i in range(0,len(tieba)):
     tieba_split.append(tieba[i].split('\t'))#有六个条目，日期，阅读数，点赞数，题目，帖子，回帖
 print '贴吧的大小:',len(tieba_split),len(tieba_split[0])
+
 '''得到股价的日期'''
 stocks = pd.read_csv(r'test_price.csv',index_col='date')
 stocks = stocks.sort_index(ascending=True)
@@ -100,7 +103,7 @@ print '-----'
 print len(all_return)
 print len(all_news)
 print len(all_tobewrite_date)
-print len(all_tieba)
+print len(all_tieba)#后面好像没用
 #print all_news[-1]
 print stocks_not_null.tail()
 print stocks_not_null.head()
@@ -108,9 +111,13 @@ print '09-30' in final_date
 
 print len(all_news)
 f = open('data.txt','w')
+datef = open('datelist.txt', 'w')
+#写入日期，真实回报值，新闻串接
 for i in range(0,len(final_date)):
     f.write(all_tobewrite_date[i]+'\t'+str(all_return[i])+'\t'+all_news[i]+'\n')
+    datef.write(all_tobewrite_date[i]+'\n')
 f.close()
+datef.close()
 
     
 

@@ -13,3 +13,4 @@ if __name__ == "__main__":
 
     myData = ts.get_h_data('600036',start='2015-10-01',end='2016-10-01') #在这修改股票代码，前复权,从今天数前一年
     myData.to_csv(r'E:\study\master of TJU\0Subject research\data\core\price_600036.csv')#在这修改保存文件名称
+    #myData.to_csv(r'E:\study\master of TJU\0Subject research\code\Important\get_features_of_firm\test_price.csv')#在这修改保存文件名称

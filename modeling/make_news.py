@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Dec 19 16:15:15 2016
+
 示例程序
+
 倒序读入新闻，和股价对应
 得到date_list
 @author: Richard

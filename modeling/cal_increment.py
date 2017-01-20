@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """
 Created on Mon Dec 19 15:25:59 2016
+
 示例程序
+
 处理股价，对应一个增量
 输出股价的时间
 @author: Richard

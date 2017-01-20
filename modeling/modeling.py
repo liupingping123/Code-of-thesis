@@ -2,9 +2,11 @@
 """
 Created on Mon Dec 19 20:20:53 2016
 对文本进行处理，对数据集进行分离，用各种机器学习模型建模
-数据集一共221天
+数据集一共221天,177天训练集
 44天测试集，27天上涨，17天下降。都猜上涨应该是60%左右。
 注意！python都是含左不含右
+注意！删掉最后一个空行
+最后得到一个预测的结果pred_result.txt
 @author: Richard
 """
 import jieba
@@ -18,6 +20,7 @@ from sklearn.svm import SVR
 from sklearn import svm
 from sklearn.neighbors import KNeighborsRegressor
 import numpy as np
+import scipy.io as sio 
 '''打开数据'''
 jieba.load_userdict(r'final_corpus.txt')
 f = open('data.txt')
@@ -77,6 +80,8 @@ traintfidf = transformer.fit_transform(basictrain).toarray().tolist()#最后得�
 
 basictest = basicvectorizer.transform(X_test)
 testtfidf = transformer.transform(basictest).toarray().tolist()#最后得到的测试集的特征
+
+
 '''加入情感词量，在tfidf特征里
 for idx,i in enumerate(traintfidf):
     traintfidf[idx].append(float(emotion_train[idx][0]))
@@ -105,15 +110,20 @@ for i in y_test:
 estimator = PCA(n_components=100)
 pca_X_train = estimator.fit_transform(traintfidf).tolist()
 pca_X_test = estimator.transform(testtfidf).tolist()
+
+'''得到合体的特征，并保存为mat文件'''
+totalftidf = pca_X_train+pca_X_test
+sio.savemat('news_features.mat', {'news_features': totalftidf})
+
 '''加入情感词量，在降维后特征里'''
 for idx,i in enumerate(pca_X_train):
     pca_X_train[idx].append(float(emotion_train[idx][0]))
     pca_X_train[idx].append(float(emotion_train[idx][1]))
-    
+    #pca_X_train[idx].append(float(emotion_train[idx][2]))   
 for idx,i in enumerate(pca_X_test):
     pca_X_test[idx].append(float(emotion_test[idx][0]))
     pca_X_test[idx].append(float(emotion_test[idx][1]))
-
+    #pca_X_test[idx].append(float(emotion_train[idx][2]))
     
 '''回归树解决问题
 dtr = DecisionTreeRegressor()

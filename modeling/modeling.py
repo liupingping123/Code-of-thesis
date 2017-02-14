@@ -43,6 +43,8 @@ for temp in data:
     price_list.append(float(newdata[1]))
     news_list.append(newdata[2])
     date_list.append(newdata[0])
+#保存y值为mat数据
+sio.savemat('price_list.mat', {'price_list': price_list})
 #数据分割点  
 split_num = int(round(len(news_list)*0.8))
 

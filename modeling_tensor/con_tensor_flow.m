@@ -1,3 +1,4 @@
+function [tensor_flow] = con_tensot_flow(  )
 %构建张量流
 load('firm_features.mat')
 load('news_features.mat')
@@ -16,3 +17,4 @@ for i = 1:221
 end
 
 save tensor_flow tensor_flow re_tensor_flow
+end

@@ -1,130 +1,78 @@
-function [nsv, beta, bias] = tensor_reg(X,Y,ker,C,loss,e)
-%根据SVR修改的张量回归函数
-%
-%  Usage: [nsv beta bias] = svr(X,Y,ker,C,loss,e)
-%
-%  Parameters: X      - Training inputs
-%              Y      - Training targets
-%              ker    - kernel function
-%              C      - upper bound (non-separable case)
-%              loss   - loss function
-%              e      - insensitivity
-%              nsv    - number of support vectors
-%              beta   - Difference of Lagrange Multipliers
-%              bias   - bias term
-%
-%  Author: Tongzhe Zhang (ztz1992@foxmail.com)
+function [A,B,C,bias] = tensor_reg(re_co_tensor_flow)
+%% 
+% 训练张量回归参数，最终返回A,B,C,bias
 
+days = 177;% 选取前n天训练
+%% 读入数据
+load('tensor_flow.mat');
+load('price_list.mat');
+using_tensor_flow = re_co_tensor_flow(1:221);%可以更改为不同的重构方式
+price = price_list(1:days)*1000;%升降幅度提升，数值过小，所以乘以1000，选取前n天训练
+%% 赋予初始值
+A = ones(1,6);B = ones(1,100);C = ones(1,3);bias = 0;
+lastA = ones(1,6);lastB = ones(1,100);lastC = ones(1,3);lastbias = 0;
 
-  if (nargin < 3 | nargin > 6) % check correct number of arguments
-    help svr
-  else
-
-    fprintf('Support Vector Regressing ....\n')
-    fprintf('______________________________\n')
-    n = size(X,1);
-    if (nargin<6) e=0.0;, end
-    if (nargin<5) loss='eInsensitive';, end
-    if (nargin<4) C=Inf;, end
-    if (nargin<3) ker='linear';, end  
-
-    % tolerance for Support Vector Detection
-    epsilon = svtol(C);
-
-    % Construct the Kernel matrix
+%% 训练
+num = 1;
+while num < 2000 % 设置为2000
     
-    fprintf('Constructing ...\n');
-    H = zeros(n,n);  
-    for i=1:n
-       for j=1:n
-          H(i,j) = svkernel(ker,X(i,:),X(j,:));
-       end
+    % 根据m的不同，把张量转化为向量
+    % m = 1
+    featureslist = [];
+    for i = 1:days
+        one_tensor = using_tensor_flow{i};
+        tempFeatures = ttm(one_tensor, {lastB,lastC}, [2 3]); %<-- same as above
+        tempFeatures = reshape(double(tempFeatures),1,6);
+        featureslist = [featureslist;tempFeatures];
     end
-
-    % Set up the parameters for the Optimisation problem
-    switch lower(loss)
-      case 'einsensitive',
-        Hb = [H -H; -H H];
-        c = [(e*ones(n,1) - Y); (e*ones(n,1) + Y)];  
-        vlb = zeros(2*n,1);    % Set the bounds: alphas >= 0
-        vub = C*ones(2*n,1);   %                 alphas <= C
-        x0 = zeros(2*n,1);     % The starting point is [0 0 0   0]
-        neqcstr = nobias(ker); % Set the number of equality constraints (1 or 0)  
-        if neqcstr
-          A = [ones(1,n) -ones(1,n)];, b = 0;     % Set the constraint Ax = b
-        else
-          A = [];, b = []; 
-        end
-      case 'quadratic',
-        Hb = H + eye(n)/(2*C);
-        c = -Y;
-        vlb = -1e30*ones(n,1);   
-        vub = 1e30*ones(n,1);    
-        x0 = zeros(n,1);              % The starting point is [0 0 0   0]
-        neqcstr = nobias(ker);        % Set the number of equality constraints (1 or 0)  
-        if neqcstr
-          A = ones(1,n);, b = 0;      % Set the constraint Ax = b
-        else
-          A = [];, b = []; 
-        end
-      otherwise, disp('Error: Unknown Loss Function\n');
-    end
-
-    % Add small amount of zero order regularisation to 
-    % avoid problems when Hessian is badly conditioned. 
-    % Rank is always less than or equal to n.
-    % Note that adding to much reg will peturb solution
-
-    Hb = Hb+1e-10*eye(size(Hb));
- 
-    % Solve the Optimisation Problem
     
-    fprintf('Optimising ...\n');
-    st = cputime;
+    tempmodel = train(price', sparse(featureslist), '-s 13');
+    A = tempmodel.w;
+    bias = tempmodel.bias;
     
-    [alpha lambda how] = qp(Hb, c, A, b, vlb, vub, x0, neqcstr);
-
-    fprintf('Execution time : %4.1f seconds\n',cputime - st);
-    fprintf('Status : %s\n',how);
-
-    switch lower(loss)
-      case 'einsensitive',
-        beta =  alpha(1:n) - alpha(n+1:2*n);
-      case 'quadratic',
-        beta = alpha;
+    % m = 2
+    featureslist = [];
+    for i = 1:days
+        one_tensor = using_tensor_flow{i};
+        tempFeatures = ttm(one_tensor, {A,lastC}, [1 3]); %<-- same as above
+        tempFeatures = reshape(double(tempFeatures),1,100);
+        featureslist = [featureslist;tempFeatures];
     end
-    fprintf('|w0|^2    : %f\n',beta'*H*beta);  
-    fprintf('Sum beta : %f\n',sum(beta));
     
-    % Compute the number of Support Vectors
-    svi = find( abs(beta) > epsilon );
-    nsv = length( svi );
-    fprintf('Support Vectors : %d (%3.1f%%)\n',nsv,100*nsv/n);
-
-    % Implicit bias, b0
-    bias = 0;
-
-    % Explicit bias, b0 
-    if nobias(ker) ~= 0
-      switch lower(loss)
-        case 'einsensitive',
-          % find bias from average of support vectors with interpolation error e
-          % SVs with interpolation error e have alphas: 0 < alpha < C
-          svii = find( abs(beta) > epsilon & abs(beta) < (C - epsilon));
-          if length(svii) > 0
-            bias = (1/length(svii))*sum(Y(svii) - e*sign(beta(svii)) - H(svii,svi)*beta(svi));
-          else 
-            fprintf('No support vectors with interpolation error e - cannot compute bias.\n');
-            bias = (max(Y)+min(Y))/2;
-          end
-        case 'quadratic',
-            bias = mean(Y - H*beta);
-      end 
+    tempmodel = train(price', sparse(featureslist), '-s 13');
+    B = tempmodel.w;
+    bias = tempmodel.bias;
+    
+    % m = 3
+    featureslist = [];
+    for i = 1:days
+        one_tensor = using_tensor_flow{i};
+        tempFeatures = ttm(one_tensor, {A,B}, [1 2]); %<-- same as above
+        tempFeatures = reshape(double(tempFeatures),1,3);
+        featureslist = [featureslist;tempFeatures];
     end
-
-  end
-
-
-
+    
+    tempmodel = train(price', sparse(featureslist), '-s 13');
+    C = tempmodel.w;
+    bias = tempmodel.bias;
+    
+    % 显示和上次训练结果的差值
+    dispA = sum((A - lastA).^2);
+    dispB = sum((B - lastB).^2);
+    dispC = sum((C - lastC).^2);
+    totaldisp = dispA + dispB + dispC;
+    %disp(dispA);
+    %disp(dispB);
+    %disp(dispC);
+    disp(num);
+    num = num + 1;
+    disp(totaldisp);
+    disp(bias - lastbias);
+    lastA = A;
+    lastB = B;
+    lastC = C;
+    lastbias = bias;
+    
 end
 
+end

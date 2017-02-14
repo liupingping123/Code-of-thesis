@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on Thu Dec 15 14:35:12 2016
-通过搜集到的新闻库去构建一个用于构建字典的但文本文件
+通过搜集到的新闻库去构建新闻集合，用于语料库筛选
 @author: Richard
 """
 import sys
@@ -29,8 +29,8 @@ def getSourceFileLists(sourceDataDir):
 if __name__ =='__main__':
     
     fileLists = getSourceFileLists(sourceDataDir)
-    nf = open(r'E:\study\master of TJU\0Subject research\code\Important\get_features\refertext.txt','a')
-    nf.write('hello\n')
+    nf = open(r'E:\study\master of TJU\0Subject research\code\Important\get_features\refertext.txt','w')
+    nf.write('start\n')
     for fileName in fileLists:
         print fileName
         f = open(fileName)

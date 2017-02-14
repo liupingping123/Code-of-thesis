@@ -55,6 +55,7 @@ y_train = price_list[:split_num]
 y_test = price_list[split_num:]
 X = []
 corpus = {}.fromkeys([ line.rstrip().decode('utf8') for line in open('final_corpus.txt') ])
+'''！！！构建新闻特征时应不应该加上情感词库'''
 pos_corpus = {}.fromkeys([ line.rstrip().decode('utf8') for line in open('pos_corpus.txt') ])
 neg_corpus = {}.fromkeys([ line.rstrip().decode('utf8') for line in open('neg_corpus.txt') ])
 
@@ -109,7 +110,7 @@ for i in y_test:
     else:di_real_test.append(0)
 
 '''降维'''
-estimator = PCA(n_components=100)
+estimator = PCA(n_components=150)
 pca_X_train = estimator.fit_transform(traintfidf).tolist()
 pca_X_test = estimator.transform(testtfidf).tolist()
 

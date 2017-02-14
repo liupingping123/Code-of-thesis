@@ -97,7 +97,7 @@ print classification_report(di_pred,di_real_test)
 
 print y_pred
 
-f = open('pred_result.txt','a')
+f = open('pred_result.txt','w')
 testlen = len(date_list)-split_num
 for i in range(0,testlen):
     f.write(test_date_list[i]+'\t'+str(y_pred[i][0])+'\n')

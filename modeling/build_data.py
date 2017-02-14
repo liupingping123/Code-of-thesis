@@ -23,7 +23,7 @@ for i in news_split:
     all_date.append(i[0])
 news_date = set(all_date)
 
-'''读入贴吧'''
+'''读入贴吧。！！！也可以和新闻和股价一样获取日期集合'''
 t = open('test_tieba.txt')
 tieba = t.readlines()
 tieba_split = []
@@ -38,7 +38,7 @@ stocks = pd.DataFrame({"price": stocks.ix[:,'close']})
 #计算
 stocks_return = (stocks.shift(-1)['price']-stocks['price'])/stocks['price']
 stocks_return = pd.DataFrame({"return": stocks_return})
-
+'''这里可以改进，不用去掉最后一行，获得股价数据时多获取一行就可以了'''
 stocks_not_null = stocks_return[stocks_return["return"].notnull()]#去除回报为空的行
 print stocks_not_null.head()
 all_date = []

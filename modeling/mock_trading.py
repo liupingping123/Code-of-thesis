@@ -30,12 +30,12 @@ def mock_trading(pred_file = 'pred_result.txt',pricename = 'test_price.csv'):
 
             if index == tempdate:
                 print tempreturn
-                if float(tempreturn) > 0.0:
+                if float(tempreturn) > 0.0005:
                     print '大于0'
                     if stocks <= 200:
                         stocks += 100
                         cash -= 100*row['price']
-                else:
+                elif float(tempreturn) < 0:
                     print '小于0'
                     if stocks >= -200:
                         stocks -= 100

@@ -50,7 +50,7 @@ def mock_trading(pred_file = 'pred_result.txt',pricename = 'test_price.csv'):
 
                            
 
-    print 'end of function'
+    print 'end of function(mock_trading)'
     
     
 if __name__ == '__main__':

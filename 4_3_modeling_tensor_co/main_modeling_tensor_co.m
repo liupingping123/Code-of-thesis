@@ -8,8 +8,10 @@ train_num = ceil(total_len*0.8);
 test_num = total_len - train_num;
 %% 构建张量流
 [re_tensor_flow, tensor_flow] = con_tensor_flow(total_len);
+
 %% 训练得到V1,V2,V3
 [V1,V2,V3] = re_co_tensor_tucker(tensor_flow,y_incre,train_num);
+
 %% 利用V1,V2,V3得到利用相关性重建的张量流
 days = total_len;
 re_co_tensor_flow = cell(1,days);
@@ -23,6 +25,6 @@ end
 right_num = test_ABCbias(A,B,C,bias,re_co_tensor_flow,y_incre,total_len,train_num,test_num);
 
 %% 展示正确率
-right_num
-test_num
-right_num/test_num
+disp(right_num);
+disp(test_num);
+disp(right_num/test_num);

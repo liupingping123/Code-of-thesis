@@ -9,7 +9,7 @@ test_num = total_len - train_num;
 [re_tensor_flow, tensor_flow] = con_tensor_flow(total_len);
 
 %% 回归训练
-[A,B,C,bias] = tensor_reg(re_tensor_flow,y_incre,total_len,train_num,test_num);
+[A,B,C,bias] = tensor_reg(re_tensor_flow,y_incre,total_len,train_num,test_num,6,100,3,2000);
 
 %% 检验训练的结果
 right_num = test_ABCbias(A,B,C,bias,re_tensor_flow,y_incre,total_len,train_num,test_num);

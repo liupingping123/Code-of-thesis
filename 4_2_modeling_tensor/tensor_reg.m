@@ -1,4 +1,4 @@
-function [A,B,C,bias] = tensor_reg(tensor_flow,y_incre,total_len,train_num,test_num)
+function [A,B,C,bias] = tensor_reg(tensor_flow,y_incre,total_len,train_num,test_num,dim1,dim2,dim3,num_train)
 %训练张量回归参数，最终返回A,B,C,bias
 %   输入一个张量流，和一个缺省值days
 %   输出回归所需要的参数
@@ -8,12 +8,12 @@ days = train_num;% 选取前n天训练
 using_tensor_flow = tensor_flow(1:total_len);%可以更改为不同的重构方式  re_co_tensor_flow(1:221)
 price = y_incre(1:days)*1000;%升降幅度提升，数值过小，所以乘以1000，选取前n天训练
 %% 赋予初始值
-A = ones(1,6);B = ones(1,100);C = ones(1,3);bias = 0;
-lastA = ones(1,6);lastB = ones(1,100);lastC = ones(1,3);lastbias = 0;
+A = ones(1,dim1);B = ones(1,dim2);C = ones(1,dim3);bias = 0;
+lastA = ones(1,dim1);lastB = ones(1,dim2);lastC = ones(1,dim3);lastbias = 0;
 
 %% 训练
 num = 1;
-while num < 2000 % 设置为2000
+while num < num_train % 设置为2000
     
     % 根据m的不同，把张量转化为向量
     % m = 1
@@ -21,7 +21,7 @@ while num < 2000 % 设置为2000
     for i = 1:days
         one_tensor = using_tensor_flow{i};
         tempFeatures = ttm(one_tensor, {lastB,lastC}, [2 3]); %<-- same as above
-        tempFeatures = reshape(double(tempFeatures),1,6);
+        tempFeatures = reshape(double(tempFeatures),1,dim1);
         featureslist = [featureslist;tempFeatures];
     end
     
@@ -34,7 +34,7 @@ while num < 2000 % 设置为2000
     for i = 1:days
         one_tensor = using_tensor_flow{i};
         tempFeatures = ttm(one_tensor, {A,lastC}, [1 3]); %<-- same as above
-        tempFeatures = reshape(double(tempFeatures),1,100);
+        tempFeatures = reshape(double(tempFeatures),1,dim2);
         featureslist = [featureslist;tempFeatures];
     end
     
@@ -47,7 +47,7 @@ while num < 2000 % 设置为2000
     for i = 1:days
         one_tensor = using_tensor_flow{i};
         tempFeatures = ttm(one_tensor, {A,B}, [1 2]); %<-- same as above
-        tempFeatures = reshape(double(tempFeatures),1,3);
+        tempFeatures = reshape(double(tempFeatures),1,dim3);
         featureslist = [featureslist;tempFeatures];
     end
     

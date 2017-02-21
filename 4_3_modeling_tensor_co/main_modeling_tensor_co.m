@@ -28,14 +28,14 @@ for i = 1:total_len
     featurelist(i,:)= double(tenmat(one_tensor,3));
 end
 featurelist=normr(featurelist);
+save featurelist featurelist
 % %% 回归训练
 % cc=0.1;
 % [A,B,C,bias] = tensor_reg(re_co_tensor_flow,y_incre,total_len,train_num,test_num,2,dim_v1,dim_v2,dim_v3,cc);
 % 
 % %% 检验训练的结果
 % right_num = test_ABCbias(A,B,C,bias,re_co_tensor_flow,y_incre,total_len,train_num,test_num)
-%featurelist=
-tempmodel = svmtrain(y_incre(1:177)', featurelist(1:177,:),  '-c 0.1 -s 4 -t 2');
+tempmodel = svmtrain(y_incre(1:177)', featurelist(1:177,:),  '-c 1 -s 4 -t 1');
 pred_price = svmpredict(y_incre(178:221)', featurelist(178:221,:), tempmodel);
 t1s=0;
 for i=1:44
@@ -44,7 +44,7 @@ for i=1:44
     end
 end
 save pred_price pred_price
-t1s
+t1s/44
 %% 展示正确率
 % disp(right_num);
 % disp(test_num);

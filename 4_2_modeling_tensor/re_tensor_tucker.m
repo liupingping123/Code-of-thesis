@@ -1,6 +1,6 @@
 function [ B ] = re_tensor_tucker(A,dim1,dim2,dim3)
 %利用高阶奇异值分解进行张量重构
-%   输入为张量
+%   输入为张量，dim1,dim2,dim3是保留的维度
 %   输出为重构张量
 %% 按不同的模展开张量
 A1 = tenmat(A,1);

@@ -2,6 +2,11 @@ function [V1,V2,V3] = re_co_tensor_tucker(tensor_flow,y_incre,train_num,dim1,dim
 %re_co_tensor_tucker 此处显示有关此函数的摘要
 %   读入价格和特征张量
 %   输出V1，V2，V3和重构的训练张量
+%   tensor_flow是输入的特征
+%   y_incre是对应的y值
+%   train_num：训练天数
+%   dim1，dim2，dim3：U保留的维度
+%   dim_v1,dim_v2,dim_v3：V保留的维度
 
 %% 读入数据
 days = train_num;%177; %设置训练的天数
@@ -39,8 +44,6 @@ for i = 1:days
     % 构建核心张量和重构
     S = ttm(train_tensor_flow{i},{U1',U2',U3'});    
     C_flow{i} = S;
-
-
     U1_flow{i} = U1;
     U2_flow{i} = U2;
     U3_flow{i} = U3;
@@ -88,4 +91,3 @@ V1 = real(V1);
 V2 = real(V2);
 V3 = real(V3);
 end
-

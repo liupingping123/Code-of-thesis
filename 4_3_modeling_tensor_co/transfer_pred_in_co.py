@@ -19,3 +19,4 @@ w = open(r'E:\study\master of TJU\0Subject research\code\Important\5_1_mock_trad
 for i in range(0,44):
     w.write(lines[i].strip()+'\t'+str(priceget[i,0])+'\n')
 w.close()
+print 'finish this transfrom'

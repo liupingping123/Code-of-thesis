@@ -1,4 +1,4 @@
-function [A,B,C,bias] = tensor_reg(tensor_flow,y_incre,total_len,train_num,test_num,num_train,dim_v1,dim_v2,dim_v3,cc)
+function [A,B,C,bias] = tensor_reg(tensor_flow,y_incre,total_len,train_num,test_num,num_train,dim_v1,dim_v2,dim_v3)
 %训练张量回归参数，最终返回A,B,C,bias
 %   输入一个张量流，和一个缺省值days
 %   输出回归所需要的参数
@@ -25,7 +25,7 @@ while num < num_train % 设置为2000
         featureslist = [featureslist;tempFeatures];
     end
     
-    tempmodel = train(price', sparse(featureslist),  '-c 1000 -s 3');
+    tempmodel = svmtrain(price', sparse(featureslist),  '-c 0.1 -s 4 -t 0');
     A = tempmodel.w;
     bias = tempmodel.bias;
     
@@ -39,7 +39,7 @@ while num < num_train % 设置为2000
         featureslist = [featureslist;tempFeatures];
     end
     
-    tempmodel = train(price', sparse(featureslist), '-c 1000 -s 3');
+    tempmodel = svmtrain(price', sparse(featureslist), '-c 0.1 -s 4 -t 0');
     B = tempmodel.w;
     bias = tempmodel.bias;
     
@@ -53,7 +53,7 @@ while num < num_train % 设置为2000
         featureslist = [featureslist;tempFeatures];
     end
     
-    tempmodel = train(price', sparse(featureslist),  '-c 1000 -s 3');
+    tempmodel = svmtrain(price', sparse(featureslist),  '-c 0.1 -s 4 -t 0');
     C = tempmodel.w;
     bias = tempmodel.bias;
     

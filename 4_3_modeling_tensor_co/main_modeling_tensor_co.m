@@ -35,12 +35,12 @@ end
 % %% 检验训练的结果
 % right_num = test_ABCbias(A,B,C,bias,re_co_tensor_flow,y_incre,total_len,train_num,test_num)
 %% general tensor ridge regression
-using_mat = re_co_tensor_flow_mat;%更改训练和测试的特征张量
-lambda = 0.000000000001;
+using_mat = re_tensor_flow_mat;%更改训练和测试的特征张量
+lambda = 0.00000000001;%0.000000000001
 R = 3;
 MaxIter = 30;
 Tol = 1e-6;
-[U, d, err] = genTensorRegression(tensor(using_mat(:,:,:,1:train_num)),y_incre(1:train_num)', lambda, R, MaxIter, Tol);
+[U, d, err] = genTensorRegression(tensor(using_mat(:,:,:,1:train_num)),y_incre(1:train_num)', lambda, R, MaxIter, Tol);%genTensorRegression
 model.U = U;
 model.b = d;
 model.train_err = err;
@@ -48,7 +48,6 @@ model.train_err = err;
 %% 测试
 ten_U = ktensor(U);
 ten_U = tensor(ten_U);
-
 pred_price = [];
 for i = 1:test_num
     tempFeature = tensor(using_mat(:,:,:,train_num+i));

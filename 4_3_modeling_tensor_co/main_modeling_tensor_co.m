@@ -38,7 +38,7 @@ end
 using_mat = re_tensor_flow_mat;%更改训练和测试的特征张量
 lambda = 0.00000000001;%0.000000000001
 R = 3;
-MaxIter = 30;
+MaxIter = 50;
 Tol = 1e-6;
 [U, d, err] = genTensorRegression(tensor(using_mat(:,:,:,1:train_num)),y_incre(1:train_num)', lambda, R, MaxIter, Tol);%genTensorRegression
 model.U = U;

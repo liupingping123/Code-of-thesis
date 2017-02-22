@@ -40,7 +40,7 @@ class OnePage:
         page = self.getPage()
         #time.sleep(1)
         #print page
-        reg = re.compile(r'<span class="l1">(\d*)</span><span class="l2">(\d*)</span><span class="l3"><a href="(.*?)" title="(.*?)" >(.*?)</a></span><span class="l4"><a .*?</a></span><span class="l6">(.*?)</span>' ,re.S)
+        reg = re.compile(r'<span class="l1">(\d*)</span><span class="l2">(\d*)</span><span class="l3"><a href="(.*?)" title="(.*?)" >(.*?)</a></span><span class="l4"><a .*?</a><input type="hidden" value="0" /></span><span class="l6">(.*?)</span>' ,re.S)
         news_list = re.findall(reg,page)
         print 'the page has:',len(news_list)
         #for i in news_list:

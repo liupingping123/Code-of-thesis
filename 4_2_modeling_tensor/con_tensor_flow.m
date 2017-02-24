@@ -1,6 +1,6 @@
 function [re_tensor_flow,tensor_flow] = con_tensor_flow(total_len,dim1,dim2,dim3)
 %构建两个张量流
-%   
+%   之后要加入用什么方法构建的选项，外积法，还是三棍法
 %% 载入特征
 load('E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\firm_features.mat');
 load('E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\news_features_pca.mat');%注意对公司提取的特征是经过PCA降维之后的结果

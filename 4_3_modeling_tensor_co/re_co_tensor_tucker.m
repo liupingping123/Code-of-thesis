@@ -1,4 +1,4 @@
-function [V1,V2,V3] = re_co_tensor_tucker(tensor_flow,y_incre,train_num,dim1,dim2,dim3,dim_v1,dim_v2,dim_v3)
+function [V1new,V2new,V3new] = re_co_tensor_tucker(tensor_flow,y_incre,train_num,dim1,dim2,dim3,dim_v1,dim_v2,dim_v3)
 %re_co_tensor_tucker 此处显示有关此函数的摘要
 %   读入价格和特征张量
 %   输出V1，V2，V3和重构的训练张量
@@ -64,6 +64,8 @@ for i = 1:days
 end
 T1 = pinv(DU1) * (DU1 - WU1);
 [V1,eig1] = eig(T1);
+[values1,posits1]=sort(diag(eig1),'descend');
+V1new=V1(:,posits1(1:dim_v1));
 %% V2
 for i = 1:days
     DU2 = DU2 + D(i)*U2_flow{i}*U2_flow{i}';
@@ -73,6 +75,8 @@ for i = 1:days
 end
 T2 = pinv(DU2) * (DU2 - WU2);
 [V2,eig2] = eig(T2);
+[values2,posits2]=sort(diag(eig2),'descend');
+V2new=V2(:,posits2(1:dim_v2));
 %% V3
 for i = 1:days
     DU3 = DU3 + D(i)*U3_flow{i}*U3_flow{i}';
@@ -82,12 +86,10 @@ for i = 1:days
 end
 T3 = pinv(DU3) * (DU3 - WU3);
 [V3,eig3] = eig(T3);
-%% 最后整理V1，V2，V3
-V1(:,dim_v1+1:end) = [];
-V2(:,dim_v2+1:end) = [];
-V3(:,dim_v3+1:end) = [];
+[values3,posits3]=sort(diag(eig3),'descend');
+V3new=V3(:,posits3(1:dim_v3));
 %% 取实部
-V1 = real(V1);
-V2 = real(V2);
-V3 = real(V3);
+V1new = real(V1new);
+V2new = real(V2new);
+V3new = real(V3new);
 end

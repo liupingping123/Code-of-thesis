@@ -6,6 +6,17 @@ load('E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\y
 total_len = length(y_incre);
 train_num = ceil(total_len*0.8);
 test_num = total_len - train_num;
+y_class = zeros(1,total_len);
+y_test_real = y_incre(train_num+1:total_len)';
+for i = 1:total_len
+    if y_incre(i)>=0.001
+        y_class(i) = 1;
+    elseif y_incre(i)<=-0.001
+        y_class(i) = 2;
+    else 
+        y_class(i) = 3;
+    end
+end
 %U保留的维度
 dim1=5;
 dim2=80;
@@ -29,15 +40,11 @@ for i = 1:total_len
     [re_co_tensor_flow{i},re_co_tensor_flow_mat(:,:,:,i)] = re_co_tensor_tucker_single(tensor_flow{i},V1,V2,V3,dim1,dim2,dim3);
     re_tensor_flow_mat(:,:,:,i) =  re_tensor_flow{i};
 end
-%featurelist=normr(featurelist);
-% %% 回归训练
-%[A,B,C,bias] = tensor_reg(re_co_tensor_flow,y_incre,total_len,train_num,test_num,2,dim_v1,dim_v2,dim_v3);
-% %% 检验训练的结果
-% right_num = test_ABCbias(A,B,C,bias,re_co_tensor_flow,y_incre,total_len,train_num,test_num)
+
 %% general tensor ridge regression
 using_mat = re_tensor_flow_mat;%更改训练和测试的特征张量
-lambda = 0.00000000001;%0.000000000001
-R = 3;
+lambda = 0.00000000001;
+R = 5;
 MaxIter = 50;
 Tol = 1e-6;
 [U, d, err] = genTensorRegression(tensor(using_mat(:,:,:,1:train_num)),y_incre(1:train_num)', lambda, R, MaxIter, Tol);%genTensorRegression
@@ -61,10 +68,10 @@ right_num=0;
          right_num=right_num+1;
      end
  end
+disp(right_num);
+accuracy = right_num/44;
+disp(accuracy);
+%% Root Mean Squared Errors
+RMSE = sum((pred_price(1:test_num)-y_test_real(1:test_num)).^2);
+disp('RMSE'),disp(RMSE);
 save pred_price pred_price
-right_num
-right_num/44
-%% 展示正确率
-% disp(right_num);
-% disp(test_num);
-% disp(right_num/test_num);

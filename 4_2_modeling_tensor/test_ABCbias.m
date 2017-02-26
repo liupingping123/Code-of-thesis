@@ -3,7 +3,6 @@ function [right_num] = test_ABCbias(A,B,C,bias,tensor_flow,y_incre,total_len,tra
 %   输入回归参数和张量流，还有y值
 %   输出正确的个数
 %% 读入数据
-
 test_tensor_flow = tensor_flow(train_num+1:total_len);%可以更改为不同的重构方式
 test_price = y_incre(train_num+1:total_len);%升降幅度提升，数值过小，所以乘以1000，选取前n天训练
 pred_price = [];
@@ -15,7 +14,7 @@ for i = 1:test_num
     pred_price = [pred_price;tempPrice];
 end
 %% 得到最终的预测结果
-pred_price = (pred_price - bias)/1000;
+pred_price = (pred_price - bias);
 %% 得到测试集的正负向
 test_di = [];
 for tempprice = test_price

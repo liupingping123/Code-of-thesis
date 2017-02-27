@@ -8,7 +8,7 @@ Created on Thu Dec 22 15:08:10 2016
 import numpy as np
 import pandas as pd
 
-def mock_trading(pred_file = 'pred_result.txt',pricename = 'test_price.csv'):
+def mock_trading(pred_file = 'pred_result_best.txt',pricename = 'test_price.csv'):
     f = open(pred_file)
     predlines = f.readlines()
     startdate = predlines[0].split('\t')[0]

@@ -60,8 +60,8 @@ for i = 1:test_num
 end
 right_num=0;
 %% ½á¹û
- for i=1:44
-     if pred_price(i)*y_incre(i+177)>0
+ for i=1:test_num
+     if pred_price(i)*y_incre(i+train_num)>0
          right_num=right_num+1;
      end
  end

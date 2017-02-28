@@ -33,10 +33,10 @@ tempdate = ''
 
 for i in news_split:    
     if i[0] in final_date:
-        if i[0][0] == '1':
-            tempdate = '2015-'+i[0]
-        else:
-            tempdate = '2016-'+i[0]
+        #if i[0][0] == '1':
+        #    tempdate = '2015-'+i[0]
+        #else:
+        tempdate = '2016-'+i[0]
 
         if tempdate != lastdate: 
 

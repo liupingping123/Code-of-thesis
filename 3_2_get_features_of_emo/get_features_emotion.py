@@ -15,6 +15,7 @@ print pow(math.e,4)
 t = open(r'E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\datelist.txt')
 datelist = t.readlines()
 all_date = []
+#去除年份
 for i in range(0,len(datelist)):
     all_date.append(datelist[i][5:].strip('\n'))
     
@@ -52,6 +53,12 @@ for idx,i in enumerate(all_date):
     num_pos.append(pos_num_temp)
     num_neg.append(neg_num_temp)
     num_total.append(float(total_temp))
+'''为了防止没有帖子的问题，假设没有帖子时，情绪和前一天一样'''
+for idx,i in enumerate(num_total):
+    if i == 0:
+        num_total[idx] = num_total[idx-1]
+        num_pos[idx] = num_pos[idx-1]
+        num_neg[idx] = num_neg[idx-1]
 final_pos = []
 final_neg = []
 for_con_tensor = []

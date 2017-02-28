@@ -68,6 +68,6 @@ if __name__ == '__main__':
             del_list.append(final_result.index[i])
     save_result = final_result.drop(del_list,axis=0)
     
-    save_result.to_csv('num_features.csv')  
+    #save_result.to_csv('num_features.csv')#保存成CSV格式
     result_list = save_result.values
     sio.savemat(r'E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\firm_features.mat', {'firm_features': result_list})

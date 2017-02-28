@@ -63,10 +63,10 @@ tempdate = ''
 for i in news_split:    
     if i[0] in final_date:
 
-        if i[0][0] == '1':
-            tempdate = '2015-'+i[0]
-        else:
-            tempdate = '2016-'+i[0]
+        #if i[0][0] == '1':
+        #    tempdate = '2015-'+i[0]
+        #else:
+        tempdate = '2016-'+i[0]
 
         if tempdate != lastdate: 
             all_tobewrite_date.append(lastdate)        
@@ -80,6 +80,7 @@ print '-----'
 print len(all_tobewrite_date)
 print '09-30' in final_date
 print '2015-10-08' in final_date
+print '2016-10-08' in final_date
 print '10-08' in final_date
 
 '''将日期写入文件'''

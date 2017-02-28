@@ -24,7 +24,7 @@ dim3=2;
 %V保留的主成分维度
 dim_v1=4;
 dim_v2=70;
-dim_v3=2;
+dim_v3=1;
 %% 构建张量流
 [re_tensor_flow, tensor_flow] = con_tensor_flow(total_len,dim1,dim2,dim3);
 
@@ -43,7 +43,7 @@ end
 
 %% general tensor ridge regression
 using_mat = re_tensor_flow_mat;%更改训练和测试的特征张量
-lambda = 0.00000000001;
+lambda = 0.000000001;
 R = 5;
 MaxIter = 50;
 Tol = 1e-6;
@@ -63,13 +63,13 @@ for i = 1:test_num
 end
 right_num=0;
 %% 结果
- for i=1:44
-     if pred_price(i)*y_incre(i+177)>0
+ for i=1:test_num
+     if pred_price(i)*y_incre(i+train_num)>0
          right_num=right_num+1;
      end
  end
 disp(right_num);
-accuracy = right_num/44;
+accuracy = right_num/test_num;
 disp(accuracy);
 %% Root Mean Squared Errors
 RMSE = sum((pred_price(1:test_num)-y_test_real(1:test_num)).^2);

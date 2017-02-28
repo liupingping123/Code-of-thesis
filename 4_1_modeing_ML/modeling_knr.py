@@ -18,6 +18,7 @@ datelist = t.readlines()
 date_list = []
 for i in range(0,len(datelist)):
     date_list.append(datelist[i].strip('\n'))
+total_len = len(date_list)
 '''读入新闻特征'''
 news_features_dict = sio.loadmat(r'E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\news_features_pca')
 news_list = news_features_dict['news_features'].tolist()
@@ -29,7 +30,7 @@ firm_features_dict = sio.loadmat(r'E:\study\master of TJU\0Subject research\code
 firm_list = firm_features_dict['firm_features'].tolist()
 '''读入y值'''
 y_incre_dict = sio.loadmat(r'E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\y_incre')
-price_list = y_incre_dict['y_incre'].reshape(221).tolist()
+price_list = y_incre_dict['y_incre'].reshape(total_len).tolist()
 
 #数据分割点  
 split_num = int(round(len(date_list)*0.8))
@@ -91,7 +92,7 @@ for idx,i in enumerate(pca_X_test):
     pca_X_test[idx].append(float(firm_test[idx][4]))
     pca_X_test[idx].append(float(firm_test[idx][5]))  
 '''KNN回归'''
-uni_knr=KNeighborsRegressor(weights='distance')#uniform平均回归，distance是根据距离加权回归
+uni_knr=KNeighborsRegressor(weights='distance',n_neighbors = 3)#uniform平均回归，distance是根据距离加权回归
 uni_knr.fit(pca_X_train,y_train)
 uni_knr_y_pred = uni_knr.predict(pca_X_test)
 print 'KNR的R方',uni_knr.score(pca_X_test,y_test)
@@ -108,3 +109,6 @@ testlen = len(date_list)-split_num
 for i in range(0,testlen):
     f.write(test_date_list[i]+'\t'+str(uni_knr_y_pred[i])+'\n')#修改预测名即可
 f.close()
+differ = y_test - uni_knr_y_pred
+RMSE = sum([ i*i for i in differ])
+print 'RMSE',RMSE

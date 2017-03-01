@@ -100,8 +100,8 @@ di_pred_knr = []#预测回归二值化
 for i in uni_knr_y_pred:
     if i >= 0:di_pred_knr.append(1)
     else:di_pred_knr.append(0)
-print 'KNR的报告：'
-print classification_report(di_pred_knr,di_real_test)
+#print 'KNR的报告：'
+#print classification_report(di_pred_knr,di_real_test)
 
 right_num = 0
 for idx,i in enumerate(di_pred_knr):

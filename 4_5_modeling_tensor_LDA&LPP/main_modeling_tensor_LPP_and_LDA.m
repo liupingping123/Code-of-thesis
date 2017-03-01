@@ -31,7 +31,7 @@ dim_t3=1;
 %% 训练得到X1，X2，X3
 num_class = 3;%分为几类
 alpha = 0.0001;
-beta = 0.8;
+beta = 0.8;% 0<beta<1
 [re_LPPandLDA_tensor_flow,T1new,T2new,T3new] = re_LPP_and_LDA_tensor_tucker(tensor_flow,y_incre,y_class,total_num,train_num,test_num,dim1,dim2,dim3,dim_t1,dim_t2,dim_t3,alpha,beta,num_class);
 
 %% 得到张量流的矩阵形式，这样可以使用之后的回归

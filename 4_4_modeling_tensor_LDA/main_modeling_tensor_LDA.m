@@ -91,4 +91,4 @@ RMSE = sum((pred_price(1:test_num)-y_test_real(1:test_num)).^2);
 save pred_price pred_price
 disp('RMSE'),disp(RMSE);
 disp('预测对的天数'),disp(right_num),disp('预测升降的准确率'),disp(right_num/test_num);
-disp('预测类准确度'),disp(right_class_num),disp('准确率'),disp(right_class_num/test_num)
+%disp('预测类准确度'),disp(right_class_num),disp('准确率'),disp(right_class_num/test_num)

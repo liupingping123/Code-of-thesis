@@ -6,9 +6,9 @@ load('E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\f
 load('E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\news_features_pca.mat');%注意对公司提取的特征是经过PCA降维之后的结果
 load('E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\emo_features.mat');
 %% 归一化,归一化好像对张量回归不好
-%emo_features = normc(emo_features);
-%firm_features = normc(firm_features);
-%news_features = normc(news_features);
+% emo_features = normc(emo_features);
+% firm_features = normc(firm_features);
+% news_features = normc(news_features);
 %构建原始的张量流
 tensor_flow = cell(1,size(emo_features,1));
 %构建tucker分解之后的重构后的张量流

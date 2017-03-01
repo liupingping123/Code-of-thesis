@@ -1,4 +1,4 @@
-function [ NewX ] = LDA_2D( y_class, mat_flow, num_class, dim_to_keep )
+function [ NewX,Sb,Sw ] = LDA_2D( y_class, mat_flow, num_class, dim_to_keep )
 %LDA_2D 此处显示有关此函数的摘要
 %   mat_flow是个cell
 %%

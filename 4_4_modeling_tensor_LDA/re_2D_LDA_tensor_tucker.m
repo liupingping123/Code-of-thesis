@@ -35,9 +35,9 @@ for i = 1:total_num
     U3_flow{i} = U3;
     
 end
-X1 = LDA_2D(train_y_class, U1_flow(1:train_num), num_class, dim_x1);
-X2 = LDA_2D(train_y_class, U2_flow(1:train_num), num_class, dim_x2);
-X3 = LDA_2D(train_y_class, U3_flow(1:train_num), num_class, dim_x3);
+[X1,Sb1,Sw1] = LDA_2D(train_y_class, U1_flow(1:train_num), num_class, dim_x1);
+[X2,Sb2,Sw2] = LDA_2D(train_y_class, U2_flow(1:train_num), num_class, dim_x2);
+[X3,Sb3,Sw3] = LDA_2D(train_y_class, U3_flow(1:train_num), num_class, dim_x3);
 for i = 1:total_num
     U1_flow_new{i} = X1'*U1_flow{i};
     U2_flow_new{i} = X2'*U2_flow{i};

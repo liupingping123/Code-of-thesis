@@ -28,7 +28,7 @@ tieba_split = []
 for i in range(0,len(tieba)):
     tieba_split.append(tieba[i].split('\t'))#有六个条目，日期，阅读数，点赞数，题目，帖子，回帖
 all_date = []
-for i in news_split:
+for i in tieba_split:
     all_date.append(i[0])
 tieba_date = set(all_date)
 print '贴吧的大小:',len(tieba_split),len(tieba_split[0])

@@ -19,11 +19,13 @@ stocks = pd.DataFrame({"price": stocks.ix[:,'close']})
 #计算
 stocks_return = (stocks.shift(-1)['price']-stocks['price'])/stocks['price']
 stocks_return = pd.DataFrame({"return": stocks_return})
-''''''
-stocks_not_null = stocks_return[stocks_return["return"].notnull()]#去除回报为空的行
+'''去除回报为空的行'''
+stocks_not_null = stocks_return[stocks_return["return"].notnull()]
 print stocks_not_null.head()
 
 all_incre = []
+num = 0
 for i in final_date:
+    num = num + 1 
     all_incre.append(stocks_not_null[stocks_not_null.index==i]['return'].tolist()[0])
 sio.savemat(r'E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\y_incre.mat',{'y_incre':all_incre})

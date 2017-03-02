@@ -30,7 +30,9 @@ print u'宗旨' in corpus
 t = open(r'E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\test_tieba.txt')
 tieba_data = t.readlines()
 t.close()
-'''通过公式计算'''
+
+
+'''通过公式计算贴吧情绪'''
 num_pos = []
 num_neg = []
 num_total = []
@@ -53,7 +55,7 @@ for idx,i in enumerate(all_date):
     num_pos.append(pos_num_temp)
     num_neg.append(neg_num_temp)
     num_total.append(float(total_temp))
-'''为了防止没有帖子的问题，假设没有帖子时，情绪和前一天一样'''
+#为了防止没有帖子的问题，假设没有帖子时，情绪和前一天一样
 for idx,i in enumerate(num_total):
     if i == 0:
         num_total[idx] = num_total[idx-1]
@@ -64,21 +66,59 @@ final_neg = []
 for_con_tensor = []
 #用了五天的情绪累加，但是前四天用了后面的四天
 for idx,i in enumerate(num_pos):
-    #print idx
     final_pos.append((num_pos[idx]/num_total[idx])*pow(math.e,-idx/20)+(num_pos[idx-1]/num_total[idx-1])*pow(math.e,-(idx-1)/20)+(num_pos[idx-2]/num_total[idx-2])*pow(math.e,-(idx-2)/20)+(num_pos[idx-3]/num_total[idx-3])*pow(math.e,-(idx-3)/20)+(num_pos[idx-4]/num_total[idx-4])*pow(math.e,-(idx-4)/20))
 for idx,i in enumerate(num_neg):
-    #print idx
     final_neg.append((num_neg[idx]/num_total[idx])*pow(math.e,-idx/20)+(num_neg[idx-1]/num_total[idx-1])*pow(math.e,-(idx-1)/20)+(num_neg[idx-2]/num_total[idx-2])*pow(math.e,-(idx-2)/20)+(num_neg[idx-3]/num_total[idx-3])*pow(math.e,-(idx-3)/20)+(num_neg[idx-4]/num_total[idx-4])*pow(math.e,-(idx-4)/20))
-#w = open(r'E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\num_emotion.txt','w')
+
+'''打开市场所有贴吧数据'''
+m = open(r'E:\study\master of TJU\0Subject research\code\Important\0_0_common_data\all_market_emo.txt')
+market_data = m.readlines()
+m.close()
+'''通过公式计算市场情绪'''
+num_pos_m = []
+num_neg_m = []
+num_total_m = []
+for idx,i in enumerate(all_date):
+    print idx
+    pos_num_temp = 0
+    neg_num_temp = 0
+    total_temp = 0
+    for m in market_data:
+        m_temp = m.split('\t')
+        if i==m_temp[0]:
+            m_sen = m_temp[3]+' '+m_temp[4]+' '+m_temp[5]
+            m_jieba = jieba.cut(m_sen)
+            for j in m_jieba:
+                total_temp += 1
+                if j in pos_corpus:
+                    pos_num_temp += 1
+                if j in neg_corpus:
+                    neg_num_temp += 1
+    num_pos_m.append(pos_num_temp)
+    num_neg_m.append(neg_num_temp)
+    num_total_m.append(float(total_temp))
+#为了防止没有帖子的问题，假设没有帖子时，情绪和前一天一样
+for idx,i in enumerate(num_total_m):
+    if i == 0:
+        num_total_m[idx] = num_total_m[idx-1]
+        num_pos_m[idx] = num_pos_m[idx-1]
+        num_neg_m[idx] = num_neg_m[idx-1]
+final_pos_m = []
+final_neg_m = []
+#用了五天的情绪累加，但是前四天用了后面的四天
+for idx,i in enumerate(num_pos_m):
+    final_pos_m.append((num_pos_m[idx]/num_total_m[idx])*pow(math.e,-idx/20)+(num_pos_m[idx-1]/num_total_m[idx-1])*pow(math.e,-(idx-1)/20)+(num_pos_m[idx-2]/num_total_m[idx-2])*pow(math.e,-(idx-2)/20)+(num_pos_m[idx-3]/num_total_m[idx-3])*pow(math.e,-(idx-3)/20)+(num_pos_m[idx-4]/num_total_m[idx-4])*pow(math.e,-(idx-4)/20))
+for idx,i in enumerate(num_neg):
+    final_neg_m.append((num_neg_m[idx]/num_total_m[idx])*pow(math.e,-idx/20)+(num_neg_m[idx-1]/num_total_m[idx-1])*pow(math.e,-(idx-1)/20)+(num_neg_m[idx-2]/num_total_m[idx-2])*pow(math.e,-(idx-2)/20)+(num_neg_m[idx-3]/num_total_m[idx-3])*pow(math.e,-(idx-3)/20)+(num_neg_m[idx-4]/num_total_m[idx-4])*pow(math.e,-(idx-4)/20))   
+    
 for i in range(0,len(num_pos)):#通过指数调节第三个特征的大小
-    #if i != len(num_pos)-1:
-     #   w.write(str(final_pos[i])+' '+str(final_neg[i])+' '+str((10**(-3))*(final_pos[i]-final_neg[i])/(final_pos[i]+final_neg[i]))+'\n')
-    #else:
-     #   w.write(str(final_pos[i])+' '+str(final_neg[i])+' '+str((10**(-3))*(final_pos[i]-final_neg[i])/(final_pos[i]+final_neg[i])))
     temp = []
     temp.append(final_pos[i])
     temp.append(final_neg[i])
     temp.append((10**(-6))*(final_pos[i]-final_neg[i])/(final_pos[i]+final_neg[i]))
+    temp.append(final_pos_m[i])
+    temp.append(final_neg_m[i])
+    temp.append((10**(-6))*(final_pos_m[i]-final_neg_m[i])/(final_pos_m[i]+final_neg_m[i]))
     for_con_tensor.append(temp)
 #w.close()
 sio.savemat(r'E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\emo_features.mat', {'emo_features': for_con_tensor})

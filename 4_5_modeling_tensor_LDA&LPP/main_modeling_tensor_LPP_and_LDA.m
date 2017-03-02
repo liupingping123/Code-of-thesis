@@ -41,9 +41,9 @@ for i = 1:total_num
 end
 %% general tensor ridge regression，设置参数
 using_mat = re_tensor_flow_mat;%更改训练和测试的特征张量
-lambda = 0.000000000001;%0.000000000001
+lambda = 0.000000000000001;%0.000000000001
 R = 15;
-MaxIter = 50;
+MaxIter = 30;
 Tol = 1e-6;
 [U, d, err] = genTensorRegression(tensor(using_mat(:,:,:,1:train_num)),y_incre(1:train_num)', lambda, R, MaxIter, Tol);%genTensorRegression
 model.U = U;

@@ -105,9 +105,9 @@ for i in uni_knr_y_pred:
 
 right_num = 0
 for idx,i in enumerate(di_pred_knr):
-    if di_pred_knr[i] == di_real_test[i]:
+    if di_pred_knr[idx] == di_real_test[idx]:
         right_num = right_num + 1
-print '实际计算对的个数',15,float(right_num)/(total_len-split_num)
+print '实际计算对的个数',float(right_num),float(right_num)/(total_len-split_num)
 '''输出预测文本，哪里需要，把这段代码粘哪'''
 f = open(r'E:\study\master of TJU\0Subject research\code\Important\5_1_mock_trading\pred_result.txt','w')
 testlen = len(date_list)-split_num

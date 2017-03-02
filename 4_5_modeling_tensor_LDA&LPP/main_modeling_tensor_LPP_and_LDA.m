@@ -21,11 +21,11 @@ end
 %U保留的维度
 dim1=5;
 dim2=60;
-dim3=2;
+dim3=5;
 %X保留的主成分维度
 dim_t1=4;
 dim_t2=40;
-dim_t3=1;
+dim_t3=4;
 %% 构建张量流
 [re_tensor_flow, tensor_flow] = con_tensor_flow(total_num,dim1,dim2,dim3);
 %% 训练得到X1，X2，X3
@@ -71,12 +71,16 @@ right_num=0;
 right_class_num = 0;
 %% 结果
 for i=1:test_num
-    if pred_price(i)*y_incre(i+train_num)>=0
-        right_num=right_num+1;
+    if pred_price(i) >= 0
+        if y_incre(i+train_num) >= 0
+            right_num=right_num+1;
+        end
     end
-    if pred_price_class(i) == y_class(i+train_num) %|| y_class(i+train_num)==3
-        right_class_num = right_class_num+1;
-    end
+    if pred_price(i) < 0
+        if y_incre(i+train_num) < 0
+            right_num=right_num+1;
+        end
+    end 
 end
 %% Root Mean Squared Errors
 RMSE = sum((pred_price(1:test_num)-y_test_real(1:test_num)).^2);

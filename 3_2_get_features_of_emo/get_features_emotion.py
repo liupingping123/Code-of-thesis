@@ -110,8 +110,8 @@ for idx,i in enumerate(num_pos_m):
     final_pos_m.append((num_pos_m[idx]/num_total_m[idx])*pow(math.e,-idx/20)+(num_pos_m[idx-1]/num_total_m[idx-1])*pow(math.e,-(idx-1)/20)+(num_pos_m[idx-2]/num_total_m[idx-2])*pow(math.e,-(idx-2)/20)+(num_pos_m[idx-3]/num_total_m[idx-3])*pow(math.e,-(idx-3)/20)+(num_pos_m[idx-4]/num_total_m[idx-4])*pow(math.e,-(idx-4)/20))
 for idx,i in enumerate(num_neg):
     final_neg_m.append((num_neg_m[idx]/num_total_m[idx])*pow(math.e,-idx/20)+(num_neg_m[idx-1]/num_total_m[idx-1])*pow(math.e,-(idx-1)/20)+(num_neg_m[idx-2]/num_total_m[idx-2])*pow(math.e,-(idx-2)/20)+(num_neg_m[idx-3]/num_total_m[idx-3])*pow(math.e,-(idx-3)/20)+(num_neg_m[idx-4]/num_total_m[idx-4])*pow(math.e,-(idx-4)/20))   
-    
-for i in range(0,len(num_pos)):#通过指数调节第三个特征的大小
+#通过指数调节情绪强度特征的大小    
+for i in range(0,len(num_pos)):
     temp = []
     temp.append(final_pos[i])
     temp.append(final_neg[i])
@@ -120,5 +120,5 @@ for i in range(0,len(num_pos)):#通过指数调节第三个特征的大小
     temp.append(final_neg_m[i])
     temp.append((10**(-6))*(final_pos_m[i]-final_neg_m[i])/(final_pos_m[i]+final_neg_m[i]))
     for_con_tensor.append(temp)
-#w.close()
+
 sio.savemat(r'E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\emo_features.mat', {'emo_features': for_con_tensor})

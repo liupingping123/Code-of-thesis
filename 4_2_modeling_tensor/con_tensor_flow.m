@@ -15,7 +15,7 @@ tensor_flow = cell(1,size(emo_features,1));
 re_tensor_flow = cell(1,size(emo_features,1));
 %% 重构过程
 for i = 1:total_len
-    M = zeros(6,100,3);
+    M = zeros(6,100,6);
     %M(:,1,1) = firm_features(i,:);
     %M(2,:,2) = news_features(i,:);
     %M(3,3,:) = emo_features(i,:);

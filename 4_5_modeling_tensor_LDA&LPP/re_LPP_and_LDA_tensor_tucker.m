@@ -64,9 +64,9 @@ for i = 1:total_num
     [U2,S2,V2] = svd(A2.data);
     [U3,S3,V3] = svd(A3.data);
     %% 去除噪声
-    U1(:,dim1+1:end) = [];%5:6
-    U2(:,dim2+1:end) = [];%70:100
-    U3(:,dim3+1:end) = [];%3
+    U1(:,dim1+1:end) = [];%
+    U2(:,dim2+1:end) = [];%
+    U3(:,dim3+1:end) = [];%
     S = ttm(tensor_flow{i},{U1',U2',U3'});
     C_flow{i} = S;
     U1_flow{i} = U1;
@@ -77,13 +77,13 @@ end
 [X1,Sb1,Sw1] = LDA_2D(train_y_class, U1_flow(1:train_num), num_class, dim_t1);
 [X2,Sb2,Sw2] = LDA_2D(train_y_class, U2_flow(1:train_num), num_class, dim_t2);
 [X3,Sb3,Sw3] = LDA_2D(train_y_class, U3_flow(1:train_num), num_class, dim_t3);
-%% 求得DU,WU
+%% 求得DU,WU，注意，这里的特征维度可能随着提取特征的不同，而改变
 DU1 = zeros(6,6);
 WU1 = zeros(6,6);
 DU2 = zeros(100,100);
 WU2 = zeros(100,100);
-DU3 = zeros(3,3);
-WU3 = zeros(3,3);
+DU3 = zeros(6,6);
+WU3 = zeros(6,6);
 %% DU1，WU2
 for i = 1:train_num
     DU1 = DU1 + D(i)*U1_flow{i}*U1_flow{i}';

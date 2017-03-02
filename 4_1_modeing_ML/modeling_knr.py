@@ -72,6 +72,9 @@ for idx,i in enumerate(pca_X_train):
     pca_X_train[idx].append(float(emotion_train[idx][0]))
     pca_X_train[idx].append(float(emotion_train[idx][1]))
     pca_X_train[idx].append(float(emotion_train[idx][2]))
+    pca_X_train[idx].append(float(emotion_train[idx][3]))
+    pca_X_train[idx].append(float(emotion_train[idx][4]))
+    pca_X_train[idx].append(float(emotion_train[idx][5]))
     #加入公司特征
     pca_X_train[idx].append(float(firm_train[idx][0]))
     pca_X_train[idx].append(float(firm_train[idx][1]))
@@ -84,6 +87,9 @@ for idx,i in enumerate(pca_X_test):
     pca_X_test[idx].append(float(emotion_test[idx][0]))
     pca_X_test[idx].append(float(emotion_test[idx][1]))
     pca_X_test[idx].append(float(emotion_train[idx][2]))
+    pca_X_test[idx].append(float(emotion_test[idx][3]))
+    pca_X_test[idx].append(float(emotion_test[idx][4]))
+    pca_X_test[idx].append(float(emotion_train[idx][5]))
     #加入公司特征
     pca_X_test[idx].append(float(firm_test[idx][0]))
     pca_X_test[idx].append(float(firm_test[idx][1]))

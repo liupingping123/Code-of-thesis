@@ -9,7 +9,6 @@ Created on Mon Dec 19 20:20:53 2016
 最后得到一个预测的结果pred_result.txt
 @author: Richard
 """
-from sklearn.metrics import classification_report
 from sklearn.neighbors import KNeighborsRegressor
 import scipy.io as sio 
 '''读取日期列表'''

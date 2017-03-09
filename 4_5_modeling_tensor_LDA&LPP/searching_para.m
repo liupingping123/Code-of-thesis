@@ -15,16 +15,16 @@ for beta = 0.2:0.2:0.9
             alpha = 0.0001;
             while alpha <= 10
                 lambda = 0.00000000000001;
-                while lambda <= 10
+                while lambda <= 0.000001
                     [ RMSE,right_num ] = function_version_of_main_tensor_LPP_and_LDA( lambda,R,MaxIter,alpha,beta );
                     RMSE_total = [RMSE_total;RMSE];
-                    right_num_total = [right_num_total;RMSE];
-                    beta_total = [beta_total;RMSE];
-                    R_total = [R_total;RMSE];
-                    MaxIter_total = [MaxIter_total;RMSE];
-                    alpha_total = [alpha_total;RMSE];
-                    lambda_total = [lambda_total;RMSE];
-                    lambda = lambda *1000 ;
+                    right_num_total = [right_num_total;right_num];
+                    beta_total = [beta_total;beta];
+                    R_total = [R_total;R];
+                    MaxIter_total = [MaxIter_total;MaxIter];
+                    alpha_total = [alpha_total;alpha];
+                    lambda_total = [lambda_total;lambda];
+                    lambda = lambda *10 ;
                 end
                 alpha = alpha * 10;
             end

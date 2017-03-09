@@ -30,8 +30,8 @@ dim_t3=4;
 [re_tensor_flow, tensor_flow] = con_tensor_flow(total_num,dim1,dim2,dim3);
 %% 训练得到X1，X2，X3
 num_class = 3;%分为几类
-alpha = 0.0001;
-beta = 0.8;% 0<beta<1
+alpha = 1;
+beta = 0.2;% 0<beta<1
 [re_LPPandLDA_tensor_flow,T1new,T2new,T3new] = re_LPP_and_LDA_tensor_tucker(tensor_flow,y_incre,y_class,total_num,train_num,test_num,dim1,dim2,dim3,dim_t1,dim_t2,dim_t3,alpha,beta,num_class);
 
 %% 得到张量流的矩阵形式，这样可以使用之后的回归
@@ -41,9 +41,9 @@ for i = 1:total_num
 end
 %% general tensor ridge regression，设置参数
 using_mat = re_tensor_flow_mat;%更改训练和测试的特征张量
-lambda = 0.000000000000001;%0.000000000001
-R = 15;
-MaxIter = 30;
+lambda = 0.0000000001;%0.000000000001
+R = 3;
+MaxIter = 50;
 Tol = 1e-6;
 [U, d, err] = genTensorRegression(tensor(using_mat(:,:,:,1:train_num)),y_incre(1:train_num)', lambda, R, MaxIter, Tol);%genTensorRegression
 model.U = U;

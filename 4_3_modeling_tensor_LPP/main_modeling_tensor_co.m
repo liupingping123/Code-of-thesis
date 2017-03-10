@@ -26,7 +26,7 @@ dim_v1=4;
 dim_v2=60;
 dim_v3=1;
 %% 构建张量流
-[re_tensor_flow, tensor_flow] = con_tensor_flow(total_len,dim1,dim2,dim3);
+[re_tensor_flow, tensor_flow] = con_tensor_flow(total_len,dim1,dim2,dim3,'outproduct','no');% 使用三个棍构建法或者默认的外积方法，是否归一化
 
 %% 训练得到V1,V2,V3
 [V1,V2,V3] = re_co_tensor_tucker(tensor_flow,y_incre,train_num,dim1,dim2,dim3,dim_v1,dim_v2,dim_v3);

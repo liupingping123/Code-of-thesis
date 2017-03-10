@@ -27,7 +27,7 @@ dim_x1=4;
 dim_x2=60;
 dim_x3=1;
 %% 构建张量流
-[re_tensor_flow, tensor_flow] = con_tensor_flow(total_len,dim1,dim2,dim3);
+[re_tensor_flow, tensor_flow] = con_tensor_flow(total_len,dim1,dim2,dim3,'outproduct','no');% 使用三个棍构建法或者默认的外积方法，是否归一化
 %% 训练得到X1，X2，X3
 num_class = 3;%分为几类
 [re_LDA_tensor_flow,X1,X2,X3] = re_2D_LDA_tensor_tucker(tensor_flow,y_class,total_len,train_num,dim1,dim2,dim3,dim_x1,dim_x2,dim_x3,num_class);

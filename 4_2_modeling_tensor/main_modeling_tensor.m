@@ -13,7 +13,7 @@ dim2=60;
 dim3=4;
 
 %% 构建张量流
-[re_tensor_flow, tensor_flow] = con_tensor_flow(total_num,dim1,dim2,dim3);
+[re_tensor_flow, tensor_flow] = con_tensor_flow(total_num,dim1,dim2,dim3,'threestick','yes');% 使用三个棍构建法或者默认的外积方法，是否归一化
 
 %% 得到张量流的矩阵形式，这样可以使用之后的回归
 %更改训练和测试的特征张量

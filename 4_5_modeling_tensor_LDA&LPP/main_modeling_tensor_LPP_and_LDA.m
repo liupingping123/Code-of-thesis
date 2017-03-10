@@ -82,9 +82,8 @@ for i=1:test_num
         end
     end 
 end
-%% Root Mean Squared Errors
+%% 输出结果，Root Mean Squared Errors
 RMSE = sum((pred_price(1:test_num)-y_test_real(1:test_num)).^2);
 save pred_price pred_price
 disp('RMSE'),disp(RMSE);
 disp('预测对的天数'),disp(right_num),disp('预测升降的准确率'),disp(right_num/test_num);
-%disp('预测类准确的天数'),disp(right_class_num)

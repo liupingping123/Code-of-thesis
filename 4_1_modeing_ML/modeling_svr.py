@@ -1,14 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Created on Mon Dec 19 20:20:53 2016
-对文本进行处理，对数据集进行分离，用各种机器学习模型建模
-注意！python都是含左不含右
-注意！删掉最后一个空行
-最后得到一个预测的结果pred_result.txt
+Created on Fri Mar 10 15:06:06 2017
+使用SVR进行预测
 @author: Richard
 """
-from sklearn.neighbors import KNeighborsRegressor
+from sklearn.svm import SVR
 import scipy.io as sio 
+from sklearn.metrics import mean_squared_error
 '''读取日期列表'''
 t = open(r'E:\study\master of TJU\0Subject research\code\Important\0_1_special_data\datelist.txt')
 datelist = t.readlines()
@@ -52,12 +50,13 @@ test_date_list = date_list[split_num:]
 
 
 '''计算数据集的涨跌'''
-di_real_train = []#train集涨跌的真实值，di代表direction
+#train集涨跌的真实值，di代表direction
+di_real_train = []
 for i in y_train:
     if i >= 0:di_real_train.append(1)
     else:di_real_train.append(0)
-
-di_real_test = []#test集涨跌的真实值
+#test集涨跌的真实值
+di_real_test = []
 for i in y_test:
     if i >= 0:di_real_test.append(1)
     else:di_real_test.append(0)
@@ -95,28 +94,30 @@ for idx,i in enumerate(pca_X_test):
     pca_X_test[idx].append(float(firm_test[idx][4]))
     pca_X_test[idx].append(float(firm_test[idx][5]))  
 '''KNN回归'''
-uni_knr=KNeighborsRegressor(weights='distance',n_neighbors = 3)#uniform平均回归，distance是根据距离加权回归
-uni_knr.fit(pca_X_train,y_train)
-uni_knr_y_pred = uni_knr.predict(pca_X_test)
-print 'KNR的R方',uni_knr.score(pca_X_test,y_test)
-di_pred_knr = []#预测回归二值化
-for i in uni_knr_y_pred:
-    if i >= 0:di_pred_knr.append(1)
-    else:di_pred_knr.append(0)
+my_svr = SVR(kernel='rbf')#还有多项式核poly，线性核linear，径向核rbf
+my_svr.fit(pca_X_train,y_train)
+my_svr_y_pred = my_svr.predict(pca_X_test)
+print 'SVR的R方',my_svr.score(pca_X_test,y_test)
+di_pred_svr = []#预测回归二值化
+for i in my_svr_y_pred:
+    if i >= 0:di_pred_svr.append(1)
+    else:di_pred_svr.append(0)
 #print 'KNR的报告：'
 #print classification_report(di_pred_knr,di_real_test)
 
 right_num = 0
-for idx,i in enumerate(di_pred_knr):
-    if di_pred_knr[idx] == di_real_test[idx]:
+for idx,i in enumerate(di_pred_svr):
+    if di_pred_svr[idx] == di_real_test[idx]:
         right_num = right_num + 1
 print '实际计算对的个数',right_num,float(right_num)/(total_len-split_num)
 '''输出预测文本，哪里需要，把这段代码粘哪'''
 f = open(r'E:\study\master of TJU\0Subject research\code\Important\5_1_mock_trading\pred_result.txt','w')
 testlen = len(date_list)-split_num
 for i in range(0,testlen):
-    f.write(test_date_list[i]+'\t'+str(uni_knr_y_pred[i])+'\n')#修改预测名即可
+    f.write(test_date_list[i]+'\t'+str(my_svr_y_pred[i])+'\n')#修改预测名即可
 f.close()
-differ = y_test - uni_knr_y_pred
+differ = y_test - my_svr_y_pred
 RMSE = sum([ i*i for i in differ])
 print 'RMSE',RMSE
+#工具其实算的是MSE
+print '工具算出来的RMSE',mean_squared_error(y_test,my_svr_y_pred)*len(y_test)

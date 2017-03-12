@@ -121,3 +121,4 @@ RMSE = sum([ i*i for i in differ])
 print 'RMSE',RMSE
 #工具其实算的是MSE
 print '工具算出来的RMSE',mean_squared_error(y_test,my_svr_y_pred)*len(y_test)
+print '工具算出来的MSE',mean_squared_error(y_test,my_svr_y_pred)
